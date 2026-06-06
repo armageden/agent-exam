@@ -1,0 +1,212 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+export const prerender = false;
+---
+
+<Layout title="InDecor BD - Admin Dashboard" description="Admin dashboard for the InDecor BD support agent.">
+  <main class="admin">
+    <header class="admin-header">
+      <h1>Admin Dashboard</h1>
+      <p>Manage the InDecor BD customer support agent</p>
+    </header>
+
+    <div class="admin-grid">
+      <!-- Health Check -->
+      <div class="admin-card">
+        <h2>System Health</h2>
+        <div id="health-status">Loading...</div>
+        <button id="check-health" class="admin-btn">Check Health</button>
+      </div>
+
+      <!-- AutoRAG Status -->
+      <div class="admin-card">
+        <h2>Knowledge Base (AutoRAG)</h2>
+        <p>AutoRAG automatically indexes your website content. Manage it from the Cloudflare dashboard.</p>
+        <div id="autorag-status"></div>
+        <button id="test-rag" class="admin-btn admin-btn--primary">Test RAG Query</button>
+        <div class="admin-card__detail">
+          <h4>Test Query</h4>
+          <div class="input-group">
+            <input type="text" id="rag-query" placeholder="e.g. What is the return policy?" />
+            <button id="run-rag-query" class="admin-btn">Search</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="admin-card">
+        <h2>Configuration</h2>
+        <dl class="config-list">
+          <dt>AutoRAG Name</dt>
+          <dd>indecor-support-rag</dd>
+          <dt>AI Model</dt>
+          <dd>@cf/meta/llama-3.3-70b-instruct-fp8-fast</dd>
+          <dt>AI Gateway</dt>
+          <dd>default</dd>
+          <dt>Observability</dt>
+          <dd>Enabled</dd>
+        </dl>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Health check
+    async function checkHealth() {
+      const el = document.getElementById('health-status')!;
+      el.textContent = 'Checking...';
+      try {
+        const res = await fetch('/api/health');
+        const data: any = await res.json();
+        el.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+      } catch (e) {
+        el.textContent = `Error: ${e}`;
+      }
+    }
+    document.getElementById('check-health')?.addEventListener('click', checkHealth);
+    checkHealth();
+
+    // Test RAG query
+    async function testRagQuery(query: string) {
+      const el = document.getElementById('autorag-status')!;
+      el.textContent = `Searching: "${query}"...`;
+      try {
+        const res = await fetch('/api/health');
+        const data: any = await res.json();
+        if (data.autorag === 'configured') {
+          el.innerHTML = `<p class="success">AutoRAG is configured: <strong>${data.autoragName}</strong></p><p>To test queries, open the chat widget and ask your question directly.</p>`;
+        } else {
+          el.innerHTML = `<p class="warning">AutoRAG status: ${data.autorag}. Ensure it's configured in the Cloudflare dashboard.</p>`;
+        }
+      } catch (e) {
+        el.textContent = `Error: ${e}`;
+      }
+    }
+
+    document.getElementById('test-rag')?.addEventListener('click', () => {
+      testRagQuery('general status check');
+    });
+
+    document.getElementById('run-rag-query')?.addEventListener('click', () => {
+      const input = document.getElementById('rag-query') as HTMLInputElement;
+      if (input.value) testRagQuery(input.value);
+    });
+  </script>
+</Layout>
+
+<style>
+  .admin {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 24px;
+  }
+
+  .admin-header {
+    margin-bottom: 40px;
+  }
+
+  .admin-header h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0 0 8px;
+  }
+
+  .admin-header p {
+    color: #71717a;
+    margin: 0;
+  }
+
+  .admin-grid {
+    display: grid;
+    gap: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  .admin-card {
+    background: white;
+    border: 1px solid #e4e4e7;
+    border-radius: 16px;
+    padding: 24px;
+  }
+
+  .admin-card h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 12px;
+  }
+
+  .admin-card pre {
+    background: #f4f4f5;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    overflow-x: auto;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .admin-card__detail {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #e4e4e7;
+  }
+
+  .admin-card__detail h4 {
+    font-size: 14px;
+    margin: 0 0 8px;
+  }
+
+  .admin-btn {
+    padding: 8px 16px;
+    border: 1px solid #e4e4e7;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+
+  .admin-btn:hover {
+    background: #f4f4f5;
+  }
+
+  .admin-btn--primary {
+    background: #6366f1;
+    color: white;
+    border-color: #6366f1;
+  }
+
+  .admin-btn--primary:hover {
+    background: #4f46e5;
+  }
+
+  .input-group {
+    display: flex;
+    gap: 8px;
+  }
+
+  .input-group input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #e4e4e7;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+  .config-list {
+    margin: 0;
+  }
+
+  .config-list dt {
+    font-size: 13px;
+    color: #71717a;
+    margin-top: 12px;
+  }
+
+  .config-list dd {
+    font-size: 14px;
+    font-weight: 500;
+    margin: 2px 0 0;
+  }
+</style>

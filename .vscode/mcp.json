@@ -1,0 +1,73 @@
+{
+  "servers": {
+    "astro-docs": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote@latest", "https://mcp.docs.astro.build/mcp", "3401"]
+    },
+
+    "cf-docs": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote@latest", "https://docs.mcp.cloudflare.com/mcp", "3402"]
+    },
+    "cf-workers-bindings": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote@latest", "https://bindings.mcp.cloudflare.com/mcp", "3403"]
+    },
+    "cf-workers-builds": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote@latest", "https://builds.mcp.cloudflare.com/mcp", "3404"]
+    },
+    "cf-observability": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote@latest", "https://observability.mcp.cloudflare.com/mcp", "3405"]
+    },
+    "cf-radar": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote@latest", "https://radar.mcp.cloudflare.com/mcp", "3406"]
+    },
+    "cf-containers": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote@latest", "https://containers.mcp.cloudflare.com/mcp", "3407"]
+    },
+    "cf-browser": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote@latest", "https://browser.mcp.cloudflare.com/mcp", "3408"]
+    },
+    "cf-logpush": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote@latest", "https://logs.mcp.cloudflare.com/mcp", "3409"]
+    },
+    "cf-ai-gateway": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote@latest", "https://ai-gateway.mcp.cloudflare.com/mcp", "3410"]
+    },
+    "cf-ai-search": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote@latest", "https://autorag.mcp.cloudflare.com/mcp", "3411"]
+    },
+    "cf-audit-logs": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote@latest", "https://auditlogs.mcp.cloudflare.com/mcp", "3412"]
+    },
+    "cf-dns-analytics": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote@latest", "https://dns-analytics.mcp.cloudflare.com/mcp", "3413"]
+    },
+    "cf-dex": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote@latest", "https://dex.mcp.cloudflare.com/mcp", "3414"]
+    },
+    "cf-one-casb": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote@latest", "https://casb.mcp.cloudflare.com/mcp", "3415"]
+    },
+    "cf-graphql": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote@latest", "https://graphql.mcp.cloudflare.com/mcp", "3416"]
+    },
+    "cf-agents-sdk-docs": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote@latest", "https://agents.cloudflare.com/mcp", "3417"]
+    }
+  }
+}

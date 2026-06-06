@@ -1,0 +1,49 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "agent-exam",
+	"main": "./dist/_worker.js/index.js",
+	"compatibility_date": "2026-02-19",
+	"compatibility_flags": [
+		"nodejs_compat",
+		"global_fetch_strictly_public","disable_nodejs_process_v2"
+	],
+	"assets": {
+		"binding": "ASSETS",
+		"directory": "./dist"
+	},
+
+	// Observability — logs all Worker invocations
+	"observability": {
+		"enabled": true
+	},
+
+	// Workers AI binding (also used for AutoRAG / AI Search)
+	"ai": {
+		"binding": "AI"
+	},
+
+	// Durable Object: Chat Agent
+	"durable_objects": {
+		"bindings": [
+			{
+				"name": "CHAT_AGENT",
+				"class_name": "ChatAgent"
+			}
+		]
+	},
+
+	// SQLite migration for AIChatAgent message persistence
+	"migrations": [
+		{
+			"tag": "v1",
+			"new_sqlite_classes": ["ChatAgent"]
+		}
+	],
+
+	// Environment variables
+	"vars": {
+		"AUTORAG_NAME": "indecor-support-rag",
+		"AI_GATEWAY_SLUG": "default",
+		"SITE_URL": "https://farhan.pp.ua"
+	}
+}

@@ -1,0 +1,296 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ChatWidget from '../components/ChatWidget';
+
+export const prerender = false;
+---
+
+<Layout title="InDecor BD - Customer Support" description="Get instant help with products, delivery, pricing, and orders from InDecor BD customer support.">
+	<main class="page">
+		<!-- Hero Section -->
+		<header class="hero">
+			<div class="hero__container">
+				<div class="hero__badge">AI-Powered Support</div>
+				<h1 class="hero__title">
+					Welcome to <span class="hero__brand">InDecor BD</span> Support
+				</h1>
+				<p class="hero__subtitle">
+					Get instant answers about our products, delivery, pricing, orders, and policies.
+					Our AI assistant is here to help 24/7.
+				</p>
+				<div class="hero__cta">
+					<a href="https://indecorbd.com" target="_blank" rel="noopener noreferrer" class="btn btn--outline">
+						Visit Store →
+					</a>
+				</div>
+			</div>
+		</header>
+
+		<!-- Features Grid -->
+		<section class="features">
+			<div class="features__grid">
+				<div class="feature-card">
+					<div class="feature-card__icon">🛋️</div>
+					<h3>Product Information</h3>
+					<p>Ask about materials, dimensions, pricing, and availability of any product.</p>
+				</div>
+				<div class="feature-card">
+					<div class="feature-card__icon">🚚</div>
+					<h3>Delivery & Shipping</h3>
+					<p>Get details on delivery areas, timelines, and shipping costs across Bangladesh.</p>
+				</div>
+				<div class="feature-card">
+					<div class="feature-card__icon">💰</div>
+					<h3>Pricing & Offers</h3>
+					<p>Find pricing in BDT, current promotions, and bulk order discounts.</p>
+				</div>
+				<div class="feature-card">
+					<div class="feature-card__icon">📋</div>
+					<h3>Orders & Policies</h3>
+					<p>Check order status, return policies, refund processes, and warranty info.</p>
+				</div>
+				<div class="feature-card">
+					<div class="feature-card__icon">🎨</div>
+					<h3>Design Advice</h3>
+					<p>Get personalized product recommendations for your space and style.</p>
+				</div>
+				<div class="feature-card">
+					<div class="feature-card__icon">👤</div>
+					<h3>Human Support</h3>
+					<p>Need more help? Our AI can escalate to a human agent anytime.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- How It Works -->
+		<section class="how-it-works">
+			<h2>How It Works</h2>
+			<div class="steps">
+				<div class="step">
+					<div class="step__number">1</div>
+					<h4>Open the Chat</h4>
+					<p>Click the chat button in the bottom-right corner</p>
+				</div>
+				<div class="step">
+					<div class="step__number">2</div>
+					<h4>Ask Your Question</h4>
+					<p>Type your question or use a quick suggestion</p>
+				</div>
+				<div class="step">
+					<div class="step__number">3</div>
+					<h4>Get Instant Answers</h4>
+					<p>Our AI searches our knowledge base and responds in real-time</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Footer -->
+		<footer class="footer">
+			<p>© {new Date().getFullYear()} InDecor BD. Powered by Cloudflare AI.</p>
+			<p>
+				<a href="https://indecorbd.com" target="_blank" rel="noopener noreferrer">indecorbd.com</a>
+			</p>
+		</footer>
+	</main>
+
+	<!-- Chat Widget (React Island) -->
+	<ChatWidget client:load />
+</Layout>
+
+<style>
+	.page {
+		min-height: 100vh;
+	}
+
+	/* Hero */
+	.hero {
+		background: linear-gradient(135deg, #312e81 0%, #6366f1 50%, #8b5cf6 100%);
+		color: white;
+		padding: 80px 24px;
+		text-align: center;
+	}
+
+	.hero__container {
+		max-width: 720px;
+		margin: 0 auto;
+	}
+
+	.hero__badge {
+		display: inline-block;
+		background: rgba(255, 255, 255, 0.15);
+		backdrop-filter: blur(4px);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		border-radius: 24px;
+		padding: 6px 18px;
+		font-size: 13px;
+		font-weight: 500;
+		margin-bottom: 24px;
+		letter-spacing: 0.5px;
+	}
+
+	.hero__title {
+		font-size: clamp(2rem, 5vw, 3rem);
+		font-weight: 800;
+		line-height: 1.15;
+		margin: 0 0 20px;
+	}
+
+	.hero__brand {
+		background: linear-gradient(to right, #c4b5fd, #fbbf24);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	.hero__subtitle {
+		font-size: 1.1rem;
+		line-height: 1.6;
+		opacity: 0.9;
+		margin: 0 0 32px;
+	}
+
+	.hero__cta {
+		display: flex;
+		gap: 12px;
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+
+	.btn {
+		display: inline-flex;
+		align-items: center;
+		padding: 12px 28px;
+		border-radius: 12px;
+		font-size: 15px;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.2s;
+		text-decoration: none;
+	}
+
+	.btn--outline {
+		background: rgba(255, 255, 255, 0.1);
+		border: 1px solid rgba(255, 255, 255, 0.3);
+		color: white;
+	}
+
+	.btn--outline:hover {
+		background: rgba(255, 255, 255, 0.2);
+		text-decoration: none;
+	}
+
+	/* Features */
+	.features {
+		max-width: 1100px;
+		margin: 0 auto;
+		padding: 64px 24px;
+	}
+
+	.features__grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 20px;
+	}
+
+	.feature-card {
+		background: white;
+		border: 1px solid #e4e4e7;
+		border-radius: 16px;
+		padding: 28px 24px;
+		transition: all 0.2s;
+	}
+
+	.feature-card:hover {
+		border-color: #c4b5fd;
+		box-shadow: 0 4px 20px rgba(99, 102, 241, 0.08);
+		transform: translateY(-2px);
+	}
+
+	.feature-card__icon {
+		font-size: 28px;
+		margin-bottom: 12px;
+	}
+
+	.feature-card h3 {
+		font-size: 16px;
+		font-weight: 700;
+		margin: 0 0 8px;
+		color: #18181b;
+	}
+
+	.feature-card p {
+		font-size: 14px;
+		color: #71717a;
+		line-height: 1.5;
+		margin: 0;
+	}
+
+	/* How It Works */
+	.how-it-works {
+		background: #f4f4f5;
+		padding: 64px 24px;
+		text-align: center;
+	}
+
+	.how-it-works h2 {
+		font-size: 1.5rem;
+		font-weight: 700;
+		margin: 0 0 40px;
+		color: #18181b;
+	}
+
+	.steps {
+		display: flex;
+		gap: 32px;
+		justify-content: center;
+		flex-wrap: wrap;
+		max-width: 900px;
+		margin: 0 auto;
+	}
+
+	.step {
+		flex: 1;
+		min-width: 200px;
+		max-width: 260px;
+	}
+
+	.step__number {
+		width: 48px;
+		height: 48px;
+		border-radius: 50%;
+		background: linear-gradient(135deg, #6366f1, #8b5cf6);
+		color: white;
+		font-size: 20px;
+		font-weight: 700;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0 auto 16px;
+	}
+
+	.step h4 {
+		font-size: 15px;
+		font-weight: 600;
+		margin: 0 0 8px;
+		color: #18181b;
+	}
+
+	.step p {
+		font-size: 14px;
+		color: #71717a;
+		line-height: 1.5;
+		margin: 0;
+	}
+
+	/* Footer */
+	.footer {
+		text-align: center;
+		padding: 40px 24px;
+		font-size: 14px;
+		color: #71717a;
+	}
+
+	.footer p {
+		margin: 4px 0;
+	}
+</style>
