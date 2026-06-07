@@ -32,11 +32,11 @@ function cleanContent(raw: string): string {
   // Remove CDN / cdn-cgi image paths that leak through
   text = text.replace(/\(\/cdn-cgi\/[^)]*\)/g, '');
 
-  // Convert markdown links [text](/bd/...) → text (https://indecorbd.com/bd/...)
-  text = text.replace(/\[([^\]]+)\]\((\/bd\/[^)]+)\)/g, '$1 (https://indecorbd.com$2)');
+  // Convert markdown links [text](/bd/...) → text (https://farhan.pp.ua/bd/...)
+  text = text.replace(/\[([^\]]+)\]\((\/bd\/[^)]+)\)/g, '$1 (https://farhan.pp.ua$2)');
 
-  // Convert other relative markdown links [text](/...) → text (https://indecorbd.com/...)
-  text = text.replace(/\[([^\]]+)\]\((\/[^)]+)\)/g, '$1 (https://indecorbd.com$2)');
+  // Convert other relative markdown links [text](/...) → text (https://farhan.pp.ua/...)
+  text = text.replace(/\[([^\]]+)\]\((\/[^)]+)\)/g, '$1 (https://farhan.pp.ua$2)');
 
   // Convert absolute markdown links [text](https://...) → text (url)
   text = text.replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '$1 ($2)');

@@ -45,6 +45,35 @@ export function ChatWidget() {
     }
   }, [isOpen]);
 
+  // If we're embedded in an iframe on the storefront, let the parent
+  // page know when the user clicks the X so the parent's FAB can update.
+  // Also listen for "open" / "theme" messages from the parent loader.
+  const isInIframe = typeof window !== 'undefined' && window.parent !== window;
+  useEffect(() => {
+    if (!isInIframe) return;
+    function onMessage(event: MessageEvent) {
+      // The parent loader sets apiUrl — we trust messages from the same
+      // origin as the chatbot Worker (validated in the loader).
+      if (!event.data || typeof event.data !== 'object') return;
+      if (event.data.type === 'indecor-chat:open') {
+        setIsOpen(true);
+      }
+    }
+    window.addEventListener('message', onMessage);
+    return () => window.removeEventListener('message', onMessage);
+  }, [isInIframe]);
+
+  const closeChat = () => {
+    setIsOpen(false);
+    if (isInIframe) {
+      try {
+        window.parent.postMessage({ type: 'indecor-chat:close' }, '*');
+      } catch {
+        /* ignore */
+      }
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const input = inputRef.current;
@@ -58,26 +87,31 @@ export function ChatWidget() {
 
   return (
     <>
-      {/* Floating Chat Button */}
-      <button
-        className="chat-fab"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label={isOpen ? 'Close chat' : 'Open chat'}
-      >
-        {isOpen ? (
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        ) : (
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-          </svg>
-        )}
-      </button>
+      {/* Floating Chat Button — hidden when embedded in an iframe
+          (the parent page renders its own FAB via chat-widget.js). */}
+      {!isInIframe && (
+        <button
+          className="chat-fab"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label={isOpen ? 'Close chat' : 'Open chat'}
+        >
+          {isOpen ? (
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          ) : (
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+          )}
+        </button>
+      )}
 
       {/* Chat Window */}
-      <div className={`chat-window ${isOpen ? 'chat-window--open' : ''}`}>
+      <div
+        className={`chat-window ${isOpen ? 'chat-window--open' : ''} ${isInIframe ? 'chat-window--embedded' : ''}`}
+      >
         {/* Header */}
         <div className="chat-header">
           <div className="chat-header__info">
@@ -110,7 +144,7 @@ export function ChatWidget() {
             </button>
             <button
               className="chat-header__btn"
-              onClick={() => setIsOpen(false)}
+              onClick={closeChat}
               title="Close chat"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

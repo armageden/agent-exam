@@ -1,0 +1,43 @@
+---
+/**
+ * /embed — Minimal chat-only page, designed to be iframe-embedded
+ * inside the storefront at https://farhan.pp.ua.
+ *
+ * This page renders ONLY the chat widget, with no header/footer/hero,
+ * and sets a CSP `frame-ancestors` directive that allows the storefront
+ * origin to frame it.
+ */
+import ChatWidget from '../components/ChatWidget';
+
+export const prerender = false;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>InDecor BD Support</title>
+		<meta name="robots" content="noindex" />
+		<style is:global>
+			*,
+			*::before,
+			*::after {
+				box-sizing: border-box;
+			}
+			html,
+			body {
+				margin: 0;
+				padding: 0;
+				width: 100%;
+				height: 100%;
+				background: transparent;
+				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+				-webkit-font-smoothing: antialiased;
+			}
+		</style>
+	</head>
+	<body>
+		<ChatWidget client:only="react" />
+	</body>
+</html>

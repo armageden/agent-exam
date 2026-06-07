@@ -1,0 +1,47 @@
+<!--
+  InDecor BD Chat Widget — Simple Script Embed (Option A)
+
+  Drop this snippet into your Next.js storefront's root layout
+  (e.g. `app/layout.tsx` for App Router, or `pages/_app.tsx` for Pages
+  Router). Replace the `apiUrl` with your deployed chatbot Worker URL.
+
+  The `chat-widget.js` script is served by the Worker at
+  `<apiUrl>/chat-widget.js`. It injects a floating button and opens
+  an iframe pointing to `<apiUrl>/embed` when clicked. The Worker
+  already has CORS and frame-ancestors configured for the storefront
+  origin, so no extra setup is required on the Worker side.
+
+  For the full integration guide, see `storefront-integration/README.md`.
+-->
+
+<!-- 1. Load the widget loader (async + defer to avoid blocking) -->
+<script
+  src="https://agent-exam.loki4444.workers.dev/chat-widget.js"
+  async
+></script>
+
+<!-- 2. Initialize the widget with the deployed Worker URL -->
+<script
+  dangerouslySetInnerHTML={{
+    __html: `
+      (function() {
+        function init() {
+          if (!window.InDecorChat) { setTimeout(init, 100); return; }
+          window.InDecorChat.init({
+            apiUrl: 'https://agent-exam.loki4444.workers.dev',
+            theme: {
+              primaryColor: '#6366f1',
+              secondaryColor: '#8b5cf6'
+            },
+            position: 'bottom-right'
+          });
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', init);
+        } else {
+          init();
+        }
+      })();
+    `,
+  }}
+/>

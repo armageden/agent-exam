@@ -18,9 +18,21 @@
 	},
 
 	// Workers AI binding (also used for AutoRAG / AI Search)
+	// Routes all inference through the "default" AI Gateway for logging/analytics
 	"ai": {
-		"binding": "AI"
+		"binding": "AI",
+		"gateway": {
+			"id": "default",
+			"skipCache": false,
+			"cacheTtl": 300
+		}
 	},
+	// Note: The AI Search instance "curly-queen-fe96" is accessed via
+	// `env.AI.autorag(name).{search,aiSearch}(...)` using the AI binding
+	// above. Items are uploaded out-of-band by scripts/scrape-storefront.ts
+	// using the REST API. The new `ai_search` Workers binding requires
+	// wrangler >= 4.68 to be recognized in wrangler.jsonc; revisit once
+	// upgraded.
 
 	// Durable Object: Chat Agent
 	"durable_objects": {
@@ -42,8 +54,10 @@
 
 	// Environment variables
 	"vars": {
-		"AUTORAG_NAME": "indecor-support-rag",
+		"AUTORAG_NAME": "curly-queen-fe96",
 		"AI_GATEWAY_SLUG": "default",
-		"SITE_URL": "https://farhan.pp.ua"
+		"SITE_URL": "https://farhan.pp.ua",
+		// Comma-separated origins allowed to embed the chat widget (CORS + frame-ancestors)
+		"ALLOWED_ORIGINS": "https://farhan.pp.ua,https://www.farhan.pp.ua,https://indecorbd.com,https://www.indecorbd.com,http://localhost:3000,http://localhost:4321"
 	}
 }

@@ -32,6 +32,16 @@ export const prerender = false;
             <button id="run-rag-query" class="admin-btn">Search</button>
           </div>
         </div>
+        <details class="admin-card__setup">
+          <summary>Setup instructions</summary>
+          <ol>
+            <li>Open the <a href="https://dash.cloudflare.com/?to=/:account/ai/autorag" target="_blank" rel="noopener noreferrer">Cloudflare dashboard → AI → AutoRAG</a>.</li>
+            <li>Create an instance named <code>indecor-support-rag</code> (must match <code>wrangler.jsonc</code>).</li>
+            <li>Add a website source pointing at <code>https://farhan.pp.ua/bd/*</code>.</li>
+            <li>Wait for the initial crawl to finish, then return here to test.</li>
+            <li>Or run <code>scripts/scrape-storefront.ts</code> with an API token that has the <strong>AI Search:Edit</strong> scope.</li>
+          </ol>
+        </details>
       </div>
 
       <!-- Quick Stats -->
@@ -72,12 +82,14 @@ export const prerender = false;
       const el = document.getElementById('autorag-status')!;
       el.textContent = `Searching: "${query}"...`;
       try {
-        const res = await fetch('/api/health');
+        const res = await fetch('/api/debug?q=' + encodeURIComponent(query));
         const data: any = await res.json();
-        if (data.autorag === 'configured') {
-          el.innerHTML = `<p class="success">AutoRAG is configured: <strong>${data.autoragName}</strong></p><p>To test queries, open the chat widget and ask your question directly.</p>`;
+        if (res.ok) {
+          el.innerHTML = `<p class="success">Found <strong>${data.parsed.sourceCount}</strong> sources (context: ${data.parsed.contextLength} chars).</p><pre>${JSON.stringify(data.parsed.sources, null, 2)}</pre>`;
+        } else if (data.error?.includes('AutoRAGNotFoundError') || data.error?.includes('not found')) {
+          el.innerHTML = `<p class="warning">AutoRAG instance not found. See setup instructions below.</p>`;
         } else {
-          el.innerHTML = `<p class="warning">AutoRAG status: ${data.autorag}. Ensure it's configured in the Cloudflare dashboard.</p>`;
+          el.innerHTML = `<p class="warning">Error: ${data.error}</p>`;
         }
       } catch (e) {
         el.textContent = `Error: ${e}`;
@@ -150,6 +162,48 @@ export const prerender = false;
     margin-top: 16px;
     padding-top: 16px;
     border-top: 1px solid #e4e4e7;
+  }
+
+  .admin-card__setup {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #e4e4e7;
+    font-size: 14px;
+    color: #52525b;
+  }
+
+  .admin-card__setup summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: #18181b;
+    padding: 4px 0;
+  }
+
+  .admin-card__setup ol {
+    margin: 12px 0 0;
+    padding-left: 20px;
+    line-height: 1.6;
+  }
+
+  .admin-card__setup code {
+    background: #f4f4f5;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+
+  .admin-card__setup a {
+    color: #6366f1;
+  }
+
+  .admin-card .success {
+    color: #15803d;
+    margin: 0 0 8px;
+  }
+
+  .admin-card .warning {
+    color: #b45309;
+    margin: 0 0 8px;
   }
 
   .admin-card__detail h4 {

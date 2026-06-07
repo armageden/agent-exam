@@ -147,9 +147,9 @@ class ChatAgent extends AIChatAgent<Env> {
             });
             return {
               escalated: true,
-              message: `Your request has been escalated to our support team (Priority: ${priority}). A human agent will assist you shortly. You can also reach us at our store directly through the contact information on indecorbd.com.`,
+              message: `Your request has been escalated to our support team (Priority: ${priority}). A human agent will assist you shortly. You can also reach us directly through the contact information on the storefront at farhan.pp.ua.`,
               contactOptions: {
-                website: 'https://indecorbd.com/pages/contact',
+                website: 'https://farhan.pp.ua',
               },
             };
           },
